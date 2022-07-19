@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "GAj2uTrA28XvGxt3T0aFpQSsEN4PkP5gIWuZTxRb/OzujK5/nhnAZOTNyyFJLr3eDwJZsAzSyY2bdzp4vzV3ww==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\SyedAnwar\\OneDrive - Datagration\\Documents\\CreateTags\\CreateActiveTags\\Test\\Test.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\identitymodel\\5.2.0\\identitymodel.5.2.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\identitymodel.oidcclient\\5.0.0\\identitymodel.oidcclient.5.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\myrconn.petrovisor.api\\3.5.2206.3\\myrconn.petrovisor.api.3.5.2206.3.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\myrconn.petrovisor.web.client\\3.5.2206.3\\myrconn.petrovisor.web.client.3.5.2206.3.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
+    "C:\\Users\\SyedAnwar\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
