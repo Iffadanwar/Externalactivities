@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 using MyrConn.PetroVisorFramework.API;
 using MyrConn.PetroVisorFramework.API.Configuration;
 using MyrConn.PetroVisorFramework.API.Contexts;
@@ -21,7 +14,7 @@ namespace MyrConn.WorkflowActivities
 {
     public class CreateActiveTags : AbstractCustomWorkflowActivity
     {
-        const string tagArgName = "Tag Name";
+        const string tagArgName = "Active";
 
         public override IEnumerable<ArgumentInfo> RequiredInputArguments => new List<ArgumentInfo>() {
             new(){ArgumentName = tagArgName, DefaultArgumentType = MappedArgumentType.TagEntries}
@@ -30,93 +23,103 @@ namespace MyrConn.WorkflowActivities
         public override async Task ExecuteActivityAsync(IPetroVisorServiceProvider serviceProvider, string workflowName, string activityName, Scope overrideScope, EntitySet overrideEntitySet, IEnumerable<Context> contexts, IEnumerable<ActivityMappedArgument> mappedInputArguments, IEnumerable<ActivityMappedArgument> mappedOutputArguments, CancellationToken cancellationToken)
         {
 
-
-            // confirm that there are no tags or it will run DeleteTagEntities workflow
-            string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
-            if (filterstring.Equals("Active"))
+            // Check to see if thre are any tags, if so it will throw an error.
+            /*string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
+            var filters = filterstring.Split('|').ToArray();
+            var tagentries = (await serviceProvider.TagEntriesService.GetTagEntriesAsync(new TagEntriesFilter
             {
-                await LogAsync(serviceProvider, workflowName,activityName, $"The required argument '{tagArgName}' has Value, Please run the DeleteTagEntities workflow.", cancellationToken, severity: LogMessageSeverity.Error);
+                Entity = filters[0].Split(';').ToString(),
+                Tags = filters[1].Split(';'),
+                TagGroups = filters[2].Split(';')
+            })).ToList();
+            if (tagentries.Any())
+            {
+                await LogAsync(serviceProvider, workflowName, activityName, $"The required argument '{tagArgName}' has Value, Please run the DeleteTagEntities workflow.", cancellationToken, severity: LogMessageSeverity.Error);
                 throw new ArgumentException($"The required argument '{tagArgName}' has Value, Please run the DeleteTagEntities workflow.");
             }
+            */
 
-            // c contexts or the ovverride entity set/ scope set
 
+            //checking for context.
             if (!contexts.Any() || contexts == null && overrideEntitySet == null && overrideScope == null)
-            {
-                await LogAsync(serviceProvider, workflowName,activityName, $"No context was specified! Please specify atleast one context", cancellationToken, severity: LogMessageSeverity.Error);
-                throw new ArgumentException($"No context was specified! Please specify atleast one context");
-            }
-            //looping throught multiple context and scopes.
-            foreach (var context in contexts)
-            {
-                if (overrideEntitySet != null)
                 {
-                    context.EntitySet = overrideEntitySet;
+                    await LogAsync(serviceProvider, workflowName, activityName, $"No context was specified! Please specify atleast one context", cancellationToken, severity: LogMessageSeverity.Error);
+                    throw new ArgumentException($"No context was specified! Please specify atleast one context");
                 }
-                if (overrideScope != null)
+                //looping throught multiple context and scopes.
+                foreach (var context in contexts)
                 {
-                    context.Scope = overrideScope;
-                }
+                    if (overrideEntitySet != null)
+                    {
+                        context.EntitySet = overrideEntitySet;
+                    }
+                    if (overrideScope != null)
+                    {
+                        context.Scope = overrideScope;
+                    }
 
                 //loading in the production data table
                 var scriptResults = RunScript(serviceProvider, "Is well active based on production", context.Scope, context.EntitySet, new NamedParametersValues());
-                
-                //creating a timespan of 3 days to avoide creating multiple active tags
-                TimeSpan dt1 = new TimeSpan(3, 0, 0, 0);
 
-                //creating a tagEntry list
-                List<TagEntry> timeForActiveTagsList = new List<TagEntry>();
+                    //creating a timespan of 3 days to avoide creating multiple active tags
+                    TimeSpan offlineTime = new TimeSpan(3, 0, 0, 0);
 
-                //logic and removes all false bool values and loops throught data to accuratly create time tags.
-                foreach (var result in scriptResults.First().DataBool)
-                {
-                    // mapping entity to use in tag creation
-                    var ent = context.EntitySet.Entities.FirstOrDefault(x => x.Name == result.Entity);
-                    // removing all false values
-                    var activeSteps = result.Data.Where(x => x.Value).ToArray();
+                    //creating a tagEntry list
+                    List<TagEntry> timeForActiveTagsList = new List<TagEntry>();
 
-                    //holding values
-                    var counter = 0;
-                    var holdNum = 0;
-
-                    //loop creates tags for each entity 
-                    for (var i = 0; i < activeSteps.Length - 1; i++)
+                    //logic and removes all false bool values and loops throught data to accuratly create time tags.
+                    foreach (var result in scriptResults.First().DataBool)
                     {
+                        // mapping entity to use in tag creation
+                        var ent = context.EntitySet.Entities.FirstOrDefault(x => x.Name == result.Entity);
+                        // removing all false values
+                        var activeSteps = result.Data.Where(x => x.Value).ToArray();
 
-                        if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) <= dt1)
+                        //holding values
+                        var counter = 0;
+                        var holdNum = 0;
+
+                        //loop creates tags for each entity 
+                        for (var i = 0; i < activeSteps.Length; i++)
                         {
-                            counter++;
-                        }
-                        else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) >= dt1)
-                        {
+                            if ((i + 1) == activeSteps.Length)
+                            {
+                                var startTime = activeSteps[holdNum].Date;
+                                var endTime = activeSteps[counter].Date;
+                                var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
+                                timeForActiveTagsList.Add(tag);
+                            }
+                            else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) < offlineTime)
+                            {
+                                counter++;
+                            }
+                            else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) >= offlineTime)
+                            {
 
-                            var startTime = activeSteps[holdNum].Date;
-                            var endTime = activeSteps[counter].Date;
-                            var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
-                            timeForActiveTagsList.Add(tag);
+                                var startTime = activeSteps[holdNum].Date;
+                                var endTime = activeSteps[counter].Date;
+                                var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
+                                timeForActiveTagsList.Add(tag);
 
-                            counter++;
+                                counter++;
 
-                            holdNum = counter;
+                                holdNum = counter;
 
-                            Console.WriteLine(startTime.ToString());
-                            Console.WriteLine(endTime.ToString());
+                            }
+                            else
+                            {
+                                await LogAsync(serviceProvider, workflowName, activityName, $"Error executing the script: Time data need to be in datetime format", cancellationToken, severity: LogMessageSeverity.Error);
+                                throw new Exception($"Error executing the script: Time data need to be in datetime format");
+                            }
 
-                        }
-                        else
-                        {
-                            await LogAsync(serviceProvider, workflowName, activityName, $"Error executing the script: Time data need to be in datetime format", cancellationToken, severity: LogMessageSeverity.Error);
-                            throw new Exception($"Error executing the script: Time data need to be in datetime format");
                         }
 
                     }
 
-                }
+                    // creating tags
 
-                // creating tags
-                var creatingTags = serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForActiveTagsList, cancellationToken);
-            };
-
+                    await serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForActiveTagsList, cancellationToken);
+                };
 
         }
 
@@ -164,8 +167,6 @@ namespace MyrConn.WorkflowActivities
                 };
                 await sp.LoggingService.AddLogEntryAsync(le, cancellationToken);
             }
-
-            Console.WriteLine(message);
         }
     }
 }
