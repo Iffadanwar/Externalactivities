@@ -24,7 +24,7 @@ namespace MyrConn.WorkflowActivities
         {
 
             // Check to see if thre are any tags, if so it will throw an error.
-            /*string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
+            string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
             var filters = filterstring.Split('|').ToArray();
             var tagentries = (await serviceProvider.TagEntriesService.GetTagEntriesAsync(new TagEntriesFilter
             {
@@ -37,7 +37,7 @@ namespace MyrConn.WorkflowActivities
                 await LogAsync(serviceProvider, workflowName, activityName, $"The required argument '{tagArgName}' has Value, Please run the DeleteTagEntities workflow.", cancellationToken, severity: LogMessageSeverity.Error);
                 throw new ArgumentException($"The required argument '{tagArgName}' has Value, Please run the DeleteTagEntities workflow.");
             }
-            */
+            
 
 
             //checking for context.
@@ -82,6 +82,7 @@ namespace MyrConn.WorkflowActivities
                         //loop creates tags for each entity 
                         for (var i = 0; i < activeSteps.Length; i++)
                         {
+                            //checks for last instance
                             if ((i + 1) == activeSteps.Length)
                             {
                                 var startTime = activeSteps[holdNum].Date;
@@ -89,11 +90,13 @@ namespace MyrConn.WorkflowActivities
                                 var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
                                 timeForActiveTagsList.Add(tag);
                             }
-                            else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) < offlineTime)
+                        //if the next date is less than offlineTime : counter++
+                        else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) < offlineTime)
                             {
                                 counter++;
                             }
-                            else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) >= offlineTime)
+                        //if the next date is more than offlineTime : add to taglist, counter++, holdnum = counter
+                        else if (activeSteps[i++].Date.Subtract(activeSteps[i].Date) >= offlineTime)
                             {
 
                                 var startTime = activeSteps[holdNum].Date;
