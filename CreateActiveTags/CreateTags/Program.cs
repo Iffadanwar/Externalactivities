@@ -24,6 +24,14 @@ namespace MyrConn.WorkflowActivities
         {
 
             // Check to see if thre are any tags, if so it will throw an error.
+
+            /*
+            string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
+            if (string.IsNullOrWhiteSpace(filterstring))
+            {
+                throw new ArgumentException($"The required argument '{tagArgName}' ist empty.");
+            }
+            */
             string filterstring = mappedInputArguments.FirstOrDefault(item => item.ArgumentName == tagArgName).MappedString;
             var filters = filterstring.Split('|').ToArray();
             var tagentries = (await serviceProvider.TagEntriesService.GetTagEntriesAsync(new TagEntriesFilter
@@ -58,8 +66,8 @@ namespace MyrConn.WorkflowActivities
                         context.Scope = overrideScope;
                     }
 
-                //loading in the production data table
-                var scriptResults = RunScript(serviceProvider, "Is well active based on production", context.Scope, context.EntitySet, new NamedParametersValues());
+                    //loading in the production data table
+                     var scriptResults = RunScript(serviceProvider, "Is well active based on production", context.Scope, context.EntitySet, new NamedParametersValues());
 
                     //creating a timespan of 3 days to avoide creating multiple active tags
                     TimeSpan offlineTime = new TimeSpan(3, 0, 0, 0);
