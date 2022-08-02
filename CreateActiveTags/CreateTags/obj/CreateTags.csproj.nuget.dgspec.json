@@ -42,11 +42,11 @@
           "dependencies": {
             "MyrConn.PetroVisor.API": {
               "target": "Package",
-              "version": "[3.5.2206.3, )"
+              "version": "[3.5.2207.5, )"
             },
             "MyrConn.PetroVisor.Web.Client": {
               "target": "Package",
-              "version": "[3.5.2206.3, )"
+              "version": "[3.5.2207.5, )"
             }
           },
           "imports": [

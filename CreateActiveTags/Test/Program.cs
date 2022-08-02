@@ -25,7 +25,7 @@ namespace MyrConn.WorkflowActivities
             // get service provider
             //var serviceProvider = new PetroVisorServiceProvider(new Uri("https://identity-latest.us1.petrovisor.com"), "Indigo CV", "kgray", );
             //var serviceProvider = new PetroVisorServiceProvider(new Uri("http://localhost:8093"), "Indigo CV", "kgray", );
-            var serviceProvider = new PetroVisorServiceProvider(new Uri("https://identity-latest.us1.petrovisor.com"), "Iffad Client Workspace", "ianwar", "Arainbenten10*");
+            var serviceProvider = new PetroVisorServiceProvider(new Uri("https://identity-latest.us1.petrovisor.com"), "Iffad Client workspace", "ianwar", "Arainbenten10*");
 
             // get cancellation token
             var cancelToken = new CancellationToken();
@@ -33,11 +33,11 @@ namespace MyrConn.WorkflowActivities
             // instanciate class
             var activity = new CreateActiveTags();
 
-            var tagArg = new ActivityMappedArgument()
+            var forecastingPeriodArg = new ActivityMappedArgument()
             {
                 ArgumentName = activity.RequiredInputArguments.ElementAt(0).ArgumentName,
-                ArgumentType = MappedArgumentType.StringValue,
-                MappedString = "Active"
+                ArgumentType = MappedArgumentType.WorkspaceValue,
+                MappedString = "taggapSizeArgName"
             };
 
             /*var logging = new ActivityMappedArgument()
@@ -47,11 +47,12 @@ namespace MyrConn.WorkflowActivities
                 MappedString = "lagging"
             };*/
 
-            var context = serviceProvider.RepositoryServices.Get<Context>().GetItemByName("All Wells Start To End Monthly"); 
+            var context = serviceProvider.RepositoryServices.Get<Context>().GetItemByName("All Wells Start To End Monthly");
+            var eset = serviceProvider.RepositoryServices.Get<EntitySet>().GetItemByName("Test");
 
-            await activity.ExecuteActivityAsync(serviceProvider, "test", "test", null, null,
+            await activity.ExecuteActivityAsync(serviceProvider, "test", "test", null, eset,
                 new List<Context>(){context},
-                new List<ActivityMappedArgument>() {tagArg}, null, cancelToken);
+                new List<ActivityMappedArgument>() { forecastingPeriodArg }, null, cancelToken);
 
             Console.WriteLine("Done...");
             Console.ReadKey();

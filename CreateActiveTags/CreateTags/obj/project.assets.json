@@ -108,7 +108,7 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "MyrConn.PetroVisor.API/3.5.2206.3": {
+      "MyrConn.PetroVisor.API/3.5.2207.5": {
         "type": "package",
         "compile": {
           "lib/net6.0/MyrConn.PetroVisor.API.dll": {}
@@ -117,7 +117,7 @@
           "lib/net6.0/MyrConn.PetroVisor.API.dll": {}
         }
       },
-      "MyrConn.PetroVisor.Web.Client/3.5.2206.3": {
+      "MyrConn.PetroVisor.Web.Client/3.5.2207.5": {
         "type": "package",
         "dependencies": {
           "IdentityModel.OidcClient": "5.0.0",
@@ -378,10 +378,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "MyrConn.PetroVisor.API/3.5.2206.3": {
-      "sha512": "iD4G7QPWoE6MNuM1yxJOFzzcToGIUmWdURuXTvh2ewko693XBbikR49qL7E+aG8T1O0gY/Ax5ZeyOkmdxPayTg==",
+    "MyrConn.PetroVisor.API/3.5.2207.5": {
+      "sha512": "bREzlVeUc95HBAEqe7nYjzo7+3aRpyOl5rCoEF3Fa9kwYtco5RrPT8pF1jxib3UlgrdpwaMb7NqUidprPAxfVQ==",
       "type": "package",
-      "path": "myrconn.petrovisor.api/3.5.2206.3",
+      "path": "myrconn.petrovisor.api/3.5.2207.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -389,14 +389,14 @@
         "help/PetroVisorWebAPI.chm",
         "lib/net6.0/MyrConn.PetroVisor.API.dll",
         "lib/net6.0/MyrConn.PetroVisor.API.xml",
-        "myrconn.petrovisor.api.3.5.2206.3.nupkg.sha512",
+        "myrconn.petrovisor.api.3.5.2207.5.nupkg.sha512",
         "myrconn.petrovisor.api.nuspec"
       ]
     },
-    "MyrConn.PetroVisor.Web.Client/3.5.2206.3": {
-      "sha512": "QeDdBmXsDRqTySDCizl4FozMxpuD+nQ3r/oi3mpl+Hl9jqvFi8Y8xNmqME/GuuzeBxKb5z7w6kC37InP4b1hkg==",
+    "MyrConn.PetroVisor.Web.Client/3.5.2207.5": {
+      "sha512": "ZPlfcaaKCxchD1urTc2pK3zun9+8imTqUvc5GWvgJG7cMQ7dIOGbmfhi1ffWnGhPlMF/RKHlvf3R6wZMRRbcWw==",
       "type": "package",
-      "path": "myrconn.petrovisor.web.client/3.5.2206.3",
+      "path": "myrconn.petrovisor.web.client/3.5.2207.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -406,7 +406,7 @@
         "lib/net6.0/MyrConn.PetroVisor.API.xml",
         "lib/net6.0/MyrConn.PetroVisor.Web.Client.dll",
         "lib/net6.0/MyrConn.PetroVisor.Web.Client.xml",
-        "myrconn.petrovisor.web.client.3.5.2206.3.nupkg.sha512",
+        "myrconn.petrovisor.web.client.3.5.2207.5.nupkg.sha512",
         "myrconn.petrovisor.web.client.nuspec"
       ]
     },
@@ -490,8 +490,8 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "MyrConn.PetroVisor.API >= 3.5.2206.3",
-      "MyrConn.PetroVisor.Web.Client >= 3.5.2206.3"
+      "MyrConn.PetroVisor.API >= 3.5.2207.5",
+      "MyrConn.PetroVisor.Web.Client >= 3.5.2207.5"
     ]
   },
   "packageFolders": {
@@ -535,11 +535,11 @@
         "dependencies": {
           "MyrConn.PetroVisor.API": {
             "target": "Package",
-            "version": "[3.5.2206.3, )"
+            "version": "[3.5.2207.5, )"
           },
           "MyrConn.PetroVisor.Web.Client": {
             "target": "Package",
-            "version": "[3.5.2206.3, )"
+            "version": "[3.5.2207.5, )"
           }
         },
         "imports": [

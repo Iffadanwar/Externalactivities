@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MyrConn.PetroVisor.API" Version="3.5.2207.5" />
+    <PackageReference Include="MyrConn.PetroVisor.Web.Client" Version="3.5.2207.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CreateTags\CreateTags.csproj" />
   </ItemGroup>
 

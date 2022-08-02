@@ -8,8 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "CreateTags/1.0.0": {
         "dependencies": {
-          "MyrConn.PetroVisor.API": "3.5.2206.3",
-          "MyrConn.PetroVisor.Web.Client": "3.5.2206.3"
+          "MyrConn.PetroVisor.API": "3.5.2207.5",
+          "MyrConn.PetroVisor.Web.Client": "3.5.2207.5"
         },
         "runtime": {
           "CreateTags.dll": {}
@@ -63,27 +63,27 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
-      "MyrConn.PetroVisor.API/3.5.2206.3": {
+      "MyrConn.PetroVisor.API/3.5.2207.5": {
         "runtime": {
           "lib/net6.0/MyrConn.PetroVisor.API.dll": {
-            "assemblyVersion": "3.5.2206.3",
-            "fileVersion": "3.5.2206.3"
+            "assemblyVersion": "3.5.2207.5",
+            "fileVersion": "3.5.2207.5"
           }
         }
       },
-      "MyrConn.PetroVisor.Web.Client/3.5.2206.3": {
+      "MyrConn.PetroVisor.Web.Client/3.5.2207.5": {
         "dependencies": {
           "IdentityModel.OidcClient": "5.0.0",
           "Newtonsoft.Json": "13.0.1"
         },
         "runtime": {
           "lib/net6.0/MyrConn.PetroVisor.API.dll": {
-            "assemblyVersion": "3.5.2206.3",
-            "fileVersion": "3.5.2206.3"
+            "assemblyVersion": "3.5.2207.5",
+            "fileVersion": "3.5.2207.5"
           },
           "lib/net6.0/MyrConn.PetroVisor.Web.Client.dll": {
-            "assemblyVersion": "3.5.2206.3",
-            "fileVersion": "3.5.2206.3"
+            "assemblyVersion": "3.5.2207.5",
+            "fileVersion": "3.5.2207.5"
           }
         }
       },
@@ -165,19 +165,19 @@
       "path": "microsoft.extensions.primitives/6.0.0",
       "hashPath": "microsoft.extensions.primitives.6.0.0.nupkg.sha512"
     },
-    "MyrConn.PetroVisor.API/3.5.2206.3": {
+    "MyrConn.PetroVisor.API/3.5.2207.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-iD4G7QPWoE6MNuM1yxJOFzzcToGIUmWdURuXTvh2ewko693XBbikR49qL7E+aG8T1O0gY/Ax5ZeyOkmdxPayTg==",
-      "path": "myrconn.petrovisor.api/3.5.2206.3",
-      "hashPath": "myrconn.petrovisor.api.3.5.2206.3.nupkg.sha512"
+      "sha512": "sha512-bREzlVeUc95HBAEqe7nYjzo7+3aRpyOl5rCoEF3Fa9kwYtco5RrPT8pF1jxib3UlgrdpwaMb7NqUidprPAxfVQ==",
+      "path": "myrconn.petrovisor.api/3.5.2207.5",
+      "hashPath": "myrconn.petrovisor.api.3.5.2207.5.nupkg.sha512"
     },
-    "MyrConn.PetroVisor.Web.Client/3.5.2206.3": {
+    "MyrConn.PetroVisor.Web.Client/3.5.2207.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QeDdBmXsDRqTySDCizl4FozMxpuD+nQ3r/oi3mpl+Hl9jqvFi8Y8xNmqME/GuuzeBxKb5z7w6kC37InP4b1hkg==",
-      "path": "myrconn.petrovisor.web.client/3.5.2206.3",
-      "hashPath": "myrconn.petrovisor.web.client.3.5.2206.3.nupkg.sha512"
+      "sha512": "sha512-ZPlfcaaKCxchD1urTc2pK3zun9+8imTqUvc5GWvgJG7cMQ7dIOGbmfhi1ffWnGhPlMF/RKHlvf3R6wZMRRbcWw==",
+      "path": "myrconn.petrovisor.web.client/3.5.2207.5",
+      "hashPath": "myrconn.petrovisor.web.client.3.5.2207.5.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",

@@ -42,11 +42,11 @@
           "dependencies": {
             "MyrConn.PetroVisor.API": {
               "target": "Package",
-              "version": "[3.5.2206.3, )"
+              "version": "[3.5.2207.5, )"
             },
             "MyrConn.PetroVisor.Web.Client": {
               "target": "Package",
-              "version": "[3.5.2206.3, )"
+              "version": "[3.5.2207.5, )"
             }
           },
           "imports": [
@@ -110,6 +110,16 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "MyrConn.PetroVisor.API": {
+              "target": "Package",
+              "version": "[3.5.2207.5, )"
+            },
+            "MyrConn.PetroVisor.Web.Client": {
+              "target": "Package",
+              "version": "[3.5.2207.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
