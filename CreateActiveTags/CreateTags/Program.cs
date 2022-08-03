@@ -12,7 +12,7 @@ using MyrConn.PetroVisorFramework.API.Workflows;
 
 namespace MyrConn.WorkflowActivities
 {
-    public class CreateActiveTags : AbstractCustomWorkflowActivity
+    public class CreateActiveTags : ICustomWorkflowActivity
     {
         //defining input
         const string taggapSizeArgName = "Number of days to skip for missing production.";
@@ -27,11 +27,16 @@ namespace MyrConn.WorkflowActivities
             }
         };
 
-
-        public async Task ExecuteActivityAsync(IPetroVisorServiceProvider serviceProvider, string workflowName, string activityName, Scope overrideScope, EntitySet overrideEntitySet, IEnumerable<Context> contexts, IEnumerable<ActivityMappedArgument> mappedInputArguments, IEnumerable<ActivityMappedArgument> mappedOutputArguments, CancellationToken cancellationToken)
+        public async Task<string> ExecuteActivityAsync(string activityName, IEnumerable<ActivityMappedArgument> mappedInputArguments, IEnumerable<ActivityMappedArgument> mappedOutputArguments, WorkflowActivityArguments arguments, CancellationToken cancellationToken)
             {
+            var serviceProvider = arguments.ServiceProvider;
+            var overrideScope = arguments.Scope;
+            var overrideEntitySet = arguments.EntitySet;
+            var contexts = arguments.Contexts;
+            var workflowName = arguments.WorkflowName;
+
                 //getting thats value as a numeric and making sure its not null
-                var minTagSkip = (int)(await GetWorkspaceValueArgumentValueAsync(serviceProvider, mappedInputArguments, taggapSizeArgName, SettingValueType.Numeric, cancellationToken))?.NumericValue;
+                var minTagSkip = (int)(await ICustomWorkflowActivity.GetWorkspaceValueArgumentValueAsync(serviceProvider, mappedInputArguments, taggapSizeArgName, SettingValueType.Numeric, cancellationToken))?.NumericValue;
                 if (minTagSkip <= 0)
                     throw new ArgumentException($"The required argument '{taggapSizeArgName}' has an invalid value.");
 
@@ -95,7 +100,7 @@ namespace MyrConn.WorkflowActivities
                                 {
                                     var startTime = activeSteps[holdNum].Date;
                                     var endTime = activeSteps[counter].Date;
-                                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
+                                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Active" } };
                                     timeForActiveTagsList.Add(tag);
                                 }
                                 //if the next date is less than offlineTime : counter++
@@ -109,7 +114,7 @@ namespace MyrConn.WorkflowActivities
 
                                     var startTime = activeSteps[holdNum].Date;
                                     var endTime = activeSteps[counter].Date;
-                                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent };
+                                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() {Name = "Active" } };
                                     timeForActiveTagsList.Add(tag);
 
                                     counter++;
@@ -128,10 +133,16 @@ namespace MyrConn.WorkflowActivities
                         }
 
                         // creating tags
+                        if (timeForActiveTagsList.Count == 0) { 
+                            return "no tags were created";
+                                 }
 
-                        await serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForActiveTagsList, cancellationToken);
-                    };
+                             await serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForActiveTagsList, cancellationToken);
+                             await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"you have created {timeForActiveTagsList.Count} tagenties", null, LogMessageSeverity.Information, true, cancellationToken);
+                             await serviceProvider.ConfigurationService.ResetCacheAsync(ItemType.TagEntry, cancellationToken);
+                             };
 
+            return String.Empty;
             }
 
             private static List<ResultDataTable> RunScript(IPetroVisorServiceProvider serviceProvider, string scriptName, Scope scope, EntitySet eset, NamedParametersValues parameters)

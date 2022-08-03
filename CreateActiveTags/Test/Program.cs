@@ -49,10 +49,10 @@ namespace MyrConn.WorkflowActivities
 
             var context = serviceProvider.RepositoryServices.Get<Context>().GetItemByName("All Wells Start To End Monthly");
             var eset = serviceProvider.RepositoryServices.Get<EntitySet>().GetItemByName("Test");
+            var arguments = new WorkflowActivityArguments() { Contexts = new List<Context>() { context }, EntitySet = eset, ServiceProvider = serviceProvider, WorkflowName = "Test"};
 
-            await activity.ExecuteActivityAsync(serviceProvider, "test", "test", null, eset,
-                new List<Context>(){context},
-                new List<ActivityMappedArgument>() { forecastingPeriodArg }, null, cancelToken);
+            await activity.ExecuteActivityAsync("test",
+                new List<ActivityMappedArgument>() { forecastingPeriodArg }, null, arguments, cancelToken);
 
             Console.WriteLine("Done...");
             Console.ReadKey();
