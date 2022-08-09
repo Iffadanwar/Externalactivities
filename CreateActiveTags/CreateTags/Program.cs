@@ -72,7 +72,7 @@ namespace MyrConn.WorkflowActivities
                     }
 
                     //loading in the production data table
-                    var scriptResults = RunScript(serviceProvider, "Is well active based on production", context.Scope, context.EntitySet, new NamedParametersValues());
+                    var scriptResults = RunScript(serviceProvider, "for creating active tags", context.Scope, context.EntitySet, new NamedParametersValues());
 
                         //creating a timespan of 3 days to avoide creating multiple active tags
                         TimeSpan offlineTime = new TimeSpan(minTagSkip, 0, 0, 0);
