@@ -1,0 +1,16 @@
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.csproj.AssemblyReference.cache
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.AssemblyInfoInputs.cache
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.AssemblyInfo.cs
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.csproj.CoreCompileInputs.cache
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.RazorAssemblyInfo.cache
+C:\Users\SyedAnwar\Downloads\CreateTags\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.RazorAssemblyInfo.cs
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.csproj.AssemblyReference.cache
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.AssemblyInfoInputs.cache
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.AssemblyInfo.cs
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.csproj.CoreCompileInputs.cache
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.RazorAssemblyInfo.cache
+C:\Users\SyedAnwar\Documents\Externalactivities\ProductionTag\ProductionTag\obj\Debug\net6.0\ProductionTag.RazorAssemblyInfo.cs

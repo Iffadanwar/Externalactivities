@@ -12,7 +12,7 @@ using MyrConn.PetroVisorFramework.API.Workflows;
 
 namespace MyrConn.WorkflowActivities
 {
-    public class CreateProducerInjectorTags : ICustomWorkflowActivity
+    public class CreateProdInjTags : ICustomWorkflowActivity
     {
         //defining input
         const string taggapSizeArgName = "Number of days to skip for missing production data dates.";
@@ -42,13 +42,13 @@ namespace MyrConn.WorkflowActivities
 
             var tagentries = (await serviceProvider.TagEntriesService.GetTagEntriesAsync(new TagEntriesFilter
             {
-                Tags = new List<string> { "Active" }
+                Tags = new List<string> { "Producer" }
             })).ToList();
 
             //checking for context.
             if (!contexts.Any() || contexts == null && overrideEntitySet == null && overrideScope == null)
             {
-                await LogAsync(serviceProvider, workflowName, activityName, $"No context was specified! Please specify atleast one context", cancellationToken, severity: LogMessageSeverity.Error);
+                await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"No context was specified! Please specify atleast one context", null, LogMessageSeverity.Information, true, cancellationToken);
                 throw new ArgumentException($"No context was specified! Please specify atleast one context");
             }
             //looping throught multiple context and scopes.
@@ -65,23 +65,24 @@ namespace MyrConn.WorkflowActivities
 
                 var filteredTagEntries = tagentries.Where(te => context.EntitySet.Entities.Select(x => x.Name).Contains(te.EntityName));
 
-                if (tagentries.Any())
-                {
-                    await LogAsync(serviceProvider, workflowName, activityName, $"The required argument has Value, Please run the DeleteTagEntities workflow.", cancellationToken, severity: LogMessageSeverity.Error);
-                    throw new ArgumentException($"There were active tags already assigned to some entities in the entity set. Run the deletetags activity first");
-                }
+                //if (tagentries.Any())
+                //{
+                //    await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"The required argument has Value, Please run the DeleteTagEntities workflow.", null, LogMessageSeverity.Information, true, cancellationToken);
+                //    throw new ArgumentException($"There were active tags already assigned to some entities in the entity set. Run the deletetags activity first");
+                //}
 
                 //loading in the production data table
-                var scriptResults = RunScript(serviceProvider, "for creating active tags", context.Scope, context.EntitySet, new NamedParametersValues());
+                var ProdResults = RunScript(serviceProvider, "for creating Production tags", context.Scope, context.EntitySet, new NamedParametersValues());
+                var InjResults = RunScript(serviceProvider, "for creating Injector tags", context.Scope, context.EntitySet, new NamedParametersValues());
 
                 //creating a timespan of 3 days to avoide creating multiple active tags
                 TimeSpan offlineTime = new TimeSpan(minTagSkip, 0, 0, 0);
 
                 //creating a tagEntry list
-                List<TagEntry> timeForActiveTagsList = new List<TagEntry>();
+                List<TagEntry> timeForProdTagsList = new List<TagEntry>();
 
                 //logic and removes all false bool values and loops throught data to accuratly create time tags.
-                foreach (var result in scriptResults.First().DataBool)
+                foreach (var result in ProdResults.First().DataBool)
                 {
                     // mapping entity to use in tag creation
                     var ent = context.EntitySet.Entities.FirstOrDefault(x => x.Name == result.Entity);
@@ -100,8 +101,8 @@ namespace MyrConn.WorkflowActivities
                         {
                             var startTime = activeSteps[holdNum].Date;
                             var endTime = activeSteps[counter].Date;
-                            var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Active" } };
-                            timeForActiveTagsList.Add(tag);
+                            var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Producer" } };
+                            timeForProdTagsList.Add(tag);
                         }
                         //if the next date is less than offlineTime : counter++
                         else if (activeSteps[i + 1].Date.Subtract(activeSteps[i].Date) < offlineTime)
@@ -114,8 +115,8 @@ namespace MyrConn.WorkflowActivities
 
                             var startTime = activeSteps[holdNum].Date;
                             var endTime = activeSteps[counter].Date;
-                            var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Active" } };
-                            timeForActiveTagsList.Add(tag);
+                            var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Producer" } };
+                            timeForProdTagsList.Add(tag);
 
                             counter++;
 
@@ -124,7 +125,7 @@ namespace MyrConn.WorkflowActivities
                         }
                         else
                         {
-                            await LogAsync(serviceProvider, workflowName, activityName, $"Error executing the script: Time data need to be in datetime format", cancellationToken, severity: LogMessageSeverity.Error);
+                            await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"Error executing the script: Time data need to be in datetime format", null, LogMessageSeverity.Information, true, cancellationToken);
                             throw new Exception($"Error executing the script: Time data need to be in datetime format");
                         }
 
@@ -133,13 +134,13 @@ namespace MyrConn.WorkflowActivities
                 }
 
                 // creating tags
-                if (timeForActiveTagsList.Count == 0)
+                if (timeForProdTagsList.Count == 0)
                 {
                     return "no tags were created";
                 }
 
-                await serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForActiveTagsList, cancellationToken);
-                await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"you have created {timeForActiveTagsList.Count} tagenties", null, LogMessageSeverity.Information, true, cancellationToken);
+                await serviceProvider.TagEntriesService.AddOrEditTagEntriesAsync(timeForProdTagsList, cancellationToken);
+                await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"you have created {timeForProdTagsList.Count} tagenties", null, LogMessageSeverity.Information, true, cancellationToken);
                 await serviceProvider.ConfigurationService.ResetCacheAsync(ItemType.TagEntry, cancellationToken);
             };
 
@@ -191,5 +192,60 @@ namespace MyrConn.WorkflowActivities
                 await sp.LoggingService.AddLogEntryAsync(le, cancellationToken);
             }
         }
+
+        //private static async Task CreateTags(IPetroVisorServiceProvider serviceProvider, string workflowName, string activityName, List<TagEntry> timeForProdTagsList, EnvironmentVariablesExtensions context, EnvironmentVariablesExtensions offlineTime, List<> ProdResults, )
+        //{
+        //        //logic and removes all false bool values and loops throught data to accuratly create time tags.
+        //        foreach (var result in ProdResults.First().DataBool)
+        //        {
+        //            // mapping entity to use in tag creation
+        //            var ent = context.EntitySet.Entities.FirstOrDefault(x => x.Name == result.Entity);
+        //            // removing all false values
+        //            var activeSteps = result.Data.Where(x => x.Value).ToArray();
+
+        //            //holding values
+        //            var counter = 0;
+        //            var holdNum = 0;
+
+        //            //loop creates tags for each entity 
+        //            for (var i = 0; i < activeSteps.Length; i++)
+        //            {
+        //                //checks for last instance
+        //                if ((i + 1) == activeSteps.Length)
+        //                {
+        //                    var startTime = activeSteps[holdNum].Date;
+        //                    var endTime = activeSteps[counter].Date;
+        //                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Producer" } };
+        //                    timeForProdTagsList.Add(tag);
+        //                }
+        //                //if the next date is less than offlineTime : counter++
+        //                else if (activeSteps[i + 1].Date.Subtract(activeSteps[i].Date) < offlineTime)
+        //                {
+        //                    counter++;
+        //                }
+        //                //if the next date is more than offlineTime : add to taglist, counter++, holdnum = counter
+        //                else if (activeSteps[i + 1].Date.Subtract(activeSteps[i].Date) >= offlineTime)
+        //                {
+
+        //                    var startTime = activeSteps[holdNum].Date;
+        //                    var endTime = activeSteps[counter].Date;
+        //                    var tag = new TagEntry() { Start = startTime, End = endTime, Entity = ent, Tag = new Tag() { Name = "Producer" } };
+        //                    timeForProdTagsList.Add(tag);
+
+        //                    counter++;
+
+        //                    holdNum = counter;
+
+        //                }
+        //                else
+        //                {
+        //                    await ICustomWorkflowActivity.LogAsync(serviceProvider, workflowName, activityName, $"Error executing the script: Time data need to be in datetime format", null, LogMessageSeverity.Information, true, cancellationToken);
+        //                    throw new Exception($"Error executing the script: Time data need to be in datetime format");
+        //                }
+
+        //            }
+
+        //        }
+        //}
     }
 }
